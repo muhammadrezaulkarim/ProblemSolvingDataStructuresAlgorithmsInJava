@@ -1,0 +1,234 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.BitSet;
+import java.util.Scanner;
+
+/*import java.io.File;
+import java.io.FileNotFoundException;*/
+
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+
+public class Main {
+	BitSet pb1=new BitSet(21);
+	BitSet pb2=new BitSet(21);
+	
+	BitSet picked1=new BitSet(21);
+	BitSet picked2=new BitSet(21);
+	
+	StringBuilder sb1=new StringBuilder();
+	StringBuilder sb2=new StringBuilder();
+	boolean p1won=false;
+	boolean p2won=false;
+	
+	public void input()
+	{
+		Scanner sc=null;
+		sc=new Scanner(System.in);
+/*		try {
+		sc=new Scanner(new File("input.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+
+		
+		int cases=sc.nextInt();
+		int i=0;
+		while(i<cases)
+		{
+			sb1.delete(0,sb1.length());
+			sb2.delete(0,sb2.length());
+			
+			for(int k=0;k<21;k++)
+			{
+				pb1.set(k, false);
+				pb2.set(k, false);
+				picked1.set(k, false);
+				picked2.set(k, false);
+				
+			}
+			int nCount=sc.nextInt();
+			int j=0;
+			while(j<nCount)
+			{
+				int n=sc.nextInt();
+		       pb1.set(n, true);
+		       pb2.set(n, true);
+		       j++;
+			}
+			if(i>0)
+				System.out.println();
+			System.out.printf("Scenario #%d:\n",i+1);
+			
+			for(int k=0;k<21;k++)
+			{
+				if(pb1.get(k)==true)
+				{
+					playGame(1,k,-1,1);
+					
+					if(sb1.toString().length()==0)
+						System.out.println("There is no winning move.");
+					else
+						System.out.println("The winning moves are: "+sb1.toString().trim()+".");
+					break;
+				}
+			}
+			
+		
+			
+		    i++;
+		}
+		
+	}
+	
+	public void validNums(BitSet temp, int player)
+	{
+		BitSet m1=new BitSet(21);
+		BitSet m2=new BitSet(21);
+int i=0,k=0,z=0,j=0;		
+		for(i=0;i<21;i++)
+		{
+			m1.set(i, false);
+			m2.set(i, false);
+			if(pb1.get(i))
+			temp.set(i,true);
+			
+		}
+		
+		
+		for( i=2;i<21;i++)
+		{
+			
+		
+			
+			
+		
+			if(picked1.get(i)==true && i>0)
+			{
+				temp.set(i, false);
+				m1.set(i, true);
+				z=i;
+				for(k=2;z<21;k++)
+				{
+					z=i*k;
+					m1.set(z, true);
+					temp.set(z, false);
+				}
+			}
+			else if(picked1.get(i)==true && i==0)
+			{
+				temp.set(i, false);
+			}
+			
+		
+			//m2.set(i, false);
+			if(picked2.get(i)==true && i>0)
+			{
+				temp.set(i, false);
+				m2.set(i, true);
+				z=i;
+				for(k=2;z<21;k++)
+				{
+					z=i*k;
+					m2.set(z, true);
+					temp.set(z, false);
+				}
+			}
+			else if(picked2.get(i)==true && i==0)
+			{
+				temp.set(i, false);
+			}
+			
+			
+			
+		}
+		
+		for(i=2;i<21;i++)
+		{
+			for(j=2;j<21;j++)
+			{
+				
+				if(m1.get(i)&& m2.get(j) && i+j<21)
+				{
+					
+						temp.set(i+j, false);
+						//pb2.set(i+j, false);
+				
+						
+				}
+				
+			}
+			
+		}
+		
+		
+	}
+	
+	public void playGame(int player,int num,int prevMove,int turn)
+	{
+		if(player==1)
+		{
+		    picked1.set(num, true);
+		}
+			else
+			{
+			    picked2.set(num, true);
+			}
+		
+		int nextPlayer=-1;
+		if(player==1)
+			
+			nextPlayer=2;
+			else
+				nextPlayer=1;
+		
+		BitSet temp=new BitSet(21);
+	    boolean win=false; 
+		validNums(temp,nextPlayer);
+	int count=0;	
+		for(int i=2;i<21;i++)
+		{
+			if(temp.get(i)==true)
+			{
+				count++;
+				
+				if(player==2)
+					turn++;
+				playGame(nextPlayer,i,num,turn);
+			
+			}
+		}
+		
+		if(count==0 && player==1)
+		{
+			//if(win)
+			
+			sb1.append(" "+num);
+			return;
+		}
+		
+		if(player==1)
+		{
+		
+		    picked1.set(num, false);
+		}
+			else
+			{
+		    picked2.set(num, false);
+			}
+		
+	}
+	
+	
+	
+	public static void main(String args[])
+	{
+		Main ob=new Main();
+		ob.input();
+	}
+
+}
