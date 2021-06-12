@@ -1,7 +1,5 @@
-
 public class DynamicZeroOneKnapsack 
 {
-	
     public static void main(String[] args) 
     {
     	int weight[] = {2, 3, 4, 5};
@@ -11,7 +9,7 @@ public class DynamicZeroOneKnapsack
     	int knapsactCapacity = 5; //capacity of knapsack 
 
     
-    	DynamicZeroOneKnapsack ob = new DynamicZeroOneKnapsack ();
+    	DynamicZeroOneKnapsack ob = new DynamicZeroOneKnapsack();
         System.out.println(ob.knapsackDynamic(noOfItems, knapsactCapacity, weight, profit));
     }
     
@@ -20,43 +18,42 @@ public class DynamicZeroOneKnapsack
         int i,j;
      
         //create a matrix to memoize the values using dynamic programming
-        int [][] knapsack = new int[n+1][M+1];
+        int [][] knapsack = new int[n][M+1];
      
-        //knapsack[i][j] denotes the maximum attainable value of items in knpasack with i available 
-        //items and capacity of knapsack being j
+        //knapsack[i][j] denotes the maximum attainable value of items in knpasack with 
+        // available items and capacity of knapsack being j
      
-        //initializing knapsack[0][j]=0 for 0<=j<=M because if there is no item, no value can be attained
-        for(j=0;j<=M;j++)
-            knapsack[0][j]=0;
      
-        //initializing knapsack[i][0]=0 for 0<=i<=n, because in a bag of zero capacity, no item can be placed
-        for(i=0;i<=n;i++)
-            knapsack[i][0]=0;
-     
-        //now, filling the matrix in bottom up manner
-        for(i=1;i<=n;i++)
+        //now, filling the matrix in bottom up manner from each item (index 0 to n-1)
+        for(i=0;i<n;i++)
         {
-            for(j=1;j<=M;j++)
+            for(j=1;j<=M;j++)  // For capacity(weight ) start from 1 to maxCapacity
             {
-                //check if the weight of current item i is less than or equal to the capacity of sack,
-                //take maximum of once including the current item and once not including
-                if(w[i-1]<=j)
+                //check if the weight of current item i is less than or equal 
+                //to the capacity of sack, take maximum of once including the current item an
+                // once not including
+               
+                if(w[i]<=j)
                 {
-                    knapsack[i][j]=Math.max(knapsack[i-1][j], p[i-1]+ knapsack[i-1][j-w[i-1]]);
+                    if(i == 0)  // edge case when the sack is empty
+                        knapsack[i][j]= p[i];
+                    else
+                      knapsack[i][j] = Math.max(knapsack[i-1][j], p[i] + knapsack[i-1][j-w[i]]);
                 }
      
-                //can not include the current item in this case
+                //Can not include the current item in this case
                 else
                 {
-                    knapsack[i][j]=knapsack[i-1][j];
+                    if(i == 0)  // edge case
+                       knapsack[i][j] = 0;
+                    else
+                       knapsack[i][j] = knapsack[i-1][j];
                 }
             }
         }
      
-     
-        return knapsack[n][M];
-     
-     
+        // this entry denotes the maximum attainable value of items
+        return knapsack[n-1][M];
     }
 
 }
