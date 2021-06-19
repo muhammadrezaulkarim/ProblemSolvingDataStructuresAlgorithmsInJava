@@ -30,7 +30,7 @@ The next part of the solution is to figure out which option to choose out of the
 
 */
 
-public class EditDistanceRecursiveImpl {
+public class EditDistanceImpl {
 
    public static int editDist(String x, String y) {
         // If first string is empty, the only option is to
@@ -65,7 +65,7 @@ public class EditDistanceRecursiveImpl {
         String str1 = "sunday";
         String str2 = "saturday";
  
-        System.out.println(editDist(
+        System.out.println(editDistDynamic(
             str1, str2));
     }
 
@@ -78,4 +78,40 @@ public class EditDistanceRecursiveImpl {
         else
             return z;
     }
+   
+   /* On analyzing the recursive calls, we observe that the arguments for sub-problems are suffixes of the original Strings. 
+      This means there can only be m*n unique recursive calls (where m and n are a number of suffixes of x and y). Hence the 
+      complexity of the optimal solution should be quadratic, O(m*n).
+
+Lets look at some of the sub-problems (according to recurrence relation defined in section #4):
+
+Sub-problems of D(x[1:m], y[1:n]) are D(x[2:m], y[2:n]), D(x[1:m], y[2:n]) and D(x[2:m], y[1:n])
+Sub-problems of D(x[1:m], y[2:n]) are D(x[2:m], y[3:n]), D(x[1:m], y[3:n]) and D(x[2:m], y[2:n])
+Sub-problems of D(x[2:m], y[1:n]) are D(x[3:m], y[2:n]), D(x[2:m], y[2:n]) and D(x[3:m], y[1:n])
+   */
+   
+   public static int editDistDynamic(String x, String y) {
+    int[][] dp = new int[x.length() + 1][y.length() + 1];
+
+    for (int i = 0; i <= x.length(); i++) {
+        for (int j = 0; j <= y.length(); j++) {
+            if (i == 0) {
+                dp[i][j] = j;
+            }
+            else if (j == 0) {
+                dp[i][j] = i;
+            }
+            else {
+                dp[i][j] = min(dp[i - 1][j - 1] 
+                 + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)), 
+                  dp[i - 1][j] + 1, 
+                  dp[i][j - 1] + 1);
+            }
+        }
+    }
+
+    return dp[x.length()][y.length()];
+}
+
+
 }
