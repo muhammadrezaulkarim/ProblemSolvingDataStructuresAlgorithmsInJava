@@ -30,7 +30,7 @@ The next part of the solution is to figure out which option to choose out of the
 
 */
 
-public class EditDistanceImpl {
+public class DynamicEditDistance {
 
    public static int editDist(String x, String y) {
         // If first string is empty, the only option is to
