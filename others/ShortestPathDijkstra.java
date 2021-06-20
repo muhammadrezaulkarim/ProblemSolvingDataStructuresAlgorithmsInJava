@@ -50,7 +50,6 @@ public class ShortestPathDijkstra
       
       PriorityQueue<VertexInfo> pq = new PriorityQueue<VertexInfo>(new Comparator<VertexInfo>()
       {
-          @Override
           public int compare(VertexInfo ob1, VertexInfo ob2)
           {
               return ob1.dist.compareTo(ob2.dist);
@@ -62,10 +61,10 @@ public class ShortestPathDijkstra
       double [] dist = new double[NO_OF_VERTICES];
      
       // flag to make sure no vertex considered more than once
-      boolean [] flag = new boolean[NO_OF_VERTICES];
+      boolean [] visited = new boolean[NO_OF_VERTICES];
     
       for(int v=0; v<NO_OF_VERTICES; v++)
-         flag[v] = false;
+         visited[v] = false;
         
       for(int v=0; v<NO_OF_VERTICES; v++)
          dist[v] = Double.MAX_VALUE;
@@ -75,7 +74,7 @@ public class ShortestPathDijkstra
          
       VertexInfo src = new VertexInfo(source, 0); // distnce from source to itself is 0
       pq.add(src);
-      flag[source] = true; // set to true
+      visited[source] = true; // set to true
       
       
       while(!pq.isEmpty())
@@ -95,9 +94,9 @@ public class ShortestPathDijkstra
                 if(u.dist + distance[u.label][v] < dist[v])
                       dist[v] = u.dist + distance[u.label][v];
                       
-                  if(!flag[v]) // only if not already been considered add the neighbouring vertex
+                  if(!visited[v]) // only if not already been considered add the neighbouring vertex
                   {
-                    flag[v] = true;
+                    visited[v] = true;
                     
                     VertexInfo neighbour = new VertexInfo(v, dist[v]);
                     pq.add(neighbour);
