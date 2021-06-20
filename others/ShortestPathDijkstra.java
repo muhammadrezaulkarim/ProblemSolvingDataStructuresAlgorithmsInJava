@@ -50,6 +50,7 @@ public class ShortestPathDijkstra
       
       PriorityQueue<VertexInfo> pq = new PriorityQueue<VertexInfo>(new Comparator<VertexInfo>()
       {
+          @Override
           public int compare(VertexInfo ob1, VertexInfo ob2)
           {
               return ob1.dist.compareTo(ob2.dist);
