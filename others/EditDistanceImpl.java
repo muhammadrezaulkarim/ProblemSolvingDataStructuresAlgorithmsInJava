@@ -59,16 +59,6 @@ public class EditDistanceImpl {
         return a == b ? 0 : 1;
     }
     
-    // Driver Code
-    public static void main(String args[])
-    {
-        String str1 = "sunday";
-        String str2 = "saturday";
- 
-        System.out.println(editDistDynamic(
-            str1, str2));
-    }
-
     public static int min(int x, int y, int z)
     {
         if (x <= y && x <= z)
@@ -90,11 +80,15 @@ Sub-problems of D(x[1:m], y[2:n]) are D(x[2:m], y[3:n]), D(x[1:m], y[3:n]) and D
 Sub-problems of D(x[2:m], y[1:n]) are D(x[3:m], y[2:n]), D(x[2:m], y[2:n]) and D(x[3:m], y[1:n])
    */
    
-   public static int editDistDynamic(String x, String y) {
+   public static int editDistDynamic(String x, String y) 
+   {
+    
     int[][] dp = new int[x.length() + 1][y.length() + 1];
 
-    for (int i = 0; i <= x.length(); i++) {
-        for (int j = 0; j <= y.length(); j++) {
+    for (int i = 0; i <= x.length(); i++) 
+    {
+        for (int j = 0; j <= y.length(); j++) 
+        {
             if (i == 0) {
                 dp[i][j] = j;
             }
@@ -102,10 +96,14 @@ Sub-problems of D(x[2:m], y[1:n]) are D(x[3:m], y[2:n]), D(x[2:m], y[2:n]) and D
                 dp[i][j] = i;
             }
             else {
-                dp[i][j] = min(dp[i - 1][j - 1] 
-                 + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)), 
-                  dp[i - 1][j] + 1, 
-                  dp[i][j - 1] + 1);
+				int substitution = dp[i - 1][j - 1] 
+                 + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1));
+                
+                int deletion = dp[i - 1][j] + 1;
+                
+                int insertion = dp[i][j - 1] + 1;
+                
+                dp[i][j] = min(substitution, insertion, deletion);
             }
         }
     }
@@ -113,5 +111,14 @@ Sub-problems of D(x[2:m], y[1:n]) are D(x[3:m], y[2:n]), D(x[2:m], y[2:n]) and D
     return dp[x.length()][y.length()];
 }
 
+    // Driver Code
+    public static void main(String args[])
+    {
+        String str1 = "sunday";
+        String str2 = "saturday";
+ 
+        System.out.println(editDistDynamic(
+            str1, str2));
+    }
 
 }
