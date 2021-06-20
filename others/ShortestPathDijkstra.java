@@ -4,7 +4,15 @@ public class ShortestPathDijkstra
 {
   public static int NO_OF_VERTICES = 4;
   double distance[][] = new double[NO_OF_VERTICES ][NO_OF_VERTICES];
+        
+  // stores the distance from the source vertex
+  double [] dist = new double[NO_OF_VERTICES];
+     
+  // flag to make sure no vertex considered more than once
+  boolean [] visited = new boolean[NO_OF_VERTICES];
   
+  // flag to make sure no vertex considered more than once
+  int [] parent = new int[NO_OF_VERTICES];
   
   public static void main(String args[])
   {
@@ -39,13 +47,17 @@ public class ShortestPathDijkstra
     distance[3][2] = 5.0;  
     distance[3][3] = 0.0;  // set distance to 0
     
-    double[] dist = dijkstraShortestGreedy(2, distance);
+    int source = 2;
+    int destination = 1; 
     
-    System.out.println(dist[1]);
+    dijkstraShortestGreedy(source, distance);
+    System.out.println(dist[destination]);
+    
+    printPath(source, destination);
       
   }
   
-  public double[] dijkstraShortestGreedy(int source, double distance[][])
+  public void dijkstraShortestGreedy(int source, double distance[][])
   {
       
       PriorityQueue<VertexInfo> pq = new PriorityQueue<VertexInfo>(new Comparator<VertexInfo>()
@@ -56,13 +68,7 @@ public class ShortestPathDijkstra
           }
       }
       );
-      
-      // stores the distance from the source vertex
-      double [] dist = new double[NO_OF_VERTICES];
-     
-      // flag to make sure no vertex considered more than once
-      boolean [] visited = new boolean[NO_OF_VERTICES];
-    
+
       for(int v=0; v<NO_OF_VERTICES; v++)
          visited[v] = false;
         
@@ -92,7 +98,11 @@ public class ShortestPathDijkstra
                 // if a shorter path found through u
                 
                 if(u.dist + distance[u.label][v] < dist[v])
+                {
                       dist[v] = u.dist + distance[u.label][v];
+                      //update parent info for v
+                      parent[v] = u.label;
+                }
                       
                   if(!visited[v]) // only if not already been considered add the neighbouring vertex
                   {
@@ -100,15 +110,30 @@ public class ShortestPathDijkstra
                     
                     VertexInfo neighbour = new VertexInfo(v, dist[v]);
                     pq.add(neighbour);
+                    
                   }
               } 
           } 
           
       }  
-    
-    return dist;
      
   }
+  
+  	public void printPath(int src, int dest)
+	{
+	   int j = dest;
+	   System.out.println("path from src:" + src + " to dest:" + dest);
+	   
+	   System.out.print(dest + " ");
+	      
+       while(parent[j]!=src)
+       {
+		 System.out.print(parent[j] + " ");
+		 j = parent[j];
+       }
+       
+       System.out.print(src);
+	}
   
   class VertexInfo
   {
