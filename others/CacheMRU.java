@@ -41,8 +41,7 @@ public class CacheMRU {
         }
        
         // we need to push the new element at the front of the queue
-        // need to use push method, not the add method
-        doubleEndedQueue.push(page);
+        doubleEndedQueue.addFirst(page);
     }
    
     public void show()
