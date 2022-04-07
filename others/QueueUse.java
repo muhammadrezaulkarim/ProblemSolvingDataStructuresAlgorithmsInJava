@@ -12,13 +12,14 @@ public class QueueUse {
 		que.add(3);
 		
 		//if you want to remove head of the queue
-		que.remove(); //remove head e.g. 1
+		que.remove(); // retrieves and removes head of the queue
+		que.poll();  // Retrieves and removes the head of this queue, or returns null if this queue is empty.
 		
 		// check whether the queue is empty or not
 		//System.out.println(que.isEmpty());
 		
-		System.out.println(que.peek()); // retrieves but do not remove head of the queue
-		//System.out.println(que.poll()); // retrieves and removes head of the queue
+		que.peek(); Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
+	
 		//que.clear();
 		System.out.println(que.contains(3));  //Returns true if this collection contains the specified element
 	}
