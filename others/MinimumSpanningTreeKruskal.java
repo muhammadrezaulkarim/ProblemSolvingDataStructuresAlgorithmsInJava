@@ -108,16 +108,19 @@ public class MinimumSpanningTreeKruskal
             {
                 Edge edge = minPrioQueue.poll();
                 
+		//union part of the union find algorithm
                 //check if adding this edge creates a cycle, if x==y, cycle created
+		    
                 int x = findRoot(parents, edge.src);
                 int y = findRoot(parents, edge.dest);
 
                 if(x!=y)
                 {
+			
                     //add it to our final result
                 	resultEdgeList.add(edge);
                 	
-                    union(parents,x,y);
+                    parent[y] = x;  // update parent as part of union operation
                 	
                     cost += edge.weight;
                 }
@@ -129,34 +132,26 @@ public class MinimumSpanningTreeKruskal
             
             System.out.println(cost);
         }
-
-        // Gets parent of node x.
-        public int findRoot(int parents[], int x) 
-        {
-          // Base Case: parent of x is itself.
-          if (parents[x] == x) {
+	    
+   /* The above union() and findSet() are naive and the worst case time complexity is linear O(n).
+      The trees created to represent subsets can be skewed and can become like a linked list 
+      The above operations can be optimized to O(Log n) in worst case. 
+      The idea is to always attach smaller depth tree under the root of the deeper tree. This technique is called union by rank.
+   */
+    // Gets parent of node x.
+    public int findRoot(int parents[], int x)
+    {
+        // find the root of the equivalent set containing x  
+        if( parents[x] == x)
             return x;
-          }
-          // Set current's parent to highest parent.
-          parents[x] = findRoot(parents, parents[x]);
         
-          // Returns parent.
-          return parents[x];
-        }
-      
-       /* The union() and findRoot() are naive and the worst case time complexity is linear O(n).
-       	  The trees created to represent subsets can be skewed and can become like a linked list 
-          The above operations can be optimized to O(Log n) in worst case. 
-          The idea is to always attach smaller depth tree under the root of the deeper tree. This technique is called union by rank.
-       */
-
-        public void union(int [] parent, int x, int y)
+        while(parents[x] != x)
         {
-            int x_root = findRoot(parent, x);
-            int y_root = findRoot(parent, y);
-
-            parent[y_root] = x_root;
+           x =  parents[x];
         }
+        
+        return x;
+    }
 
         public void displayGraph(ArrayList<Edge> edgeList)
         {
