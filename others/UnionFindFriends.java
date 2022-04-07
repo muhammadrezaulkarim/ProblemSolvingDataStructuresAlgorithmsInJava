@@ -71,6 +71,12 @@ public class UnionFindFriends
         union(x, y);
     }
     
+   /* The above union() and findSet() are naive and the worst case time complexity is linear O(n).
+      The trees created to represent subsets can be skewed and can become like a linked list 
+      The above operations can be optimized to O(Log n) in worst case. 
+      The idea is to always attach smaller depth tree under the root of the deeper tree. This technique is called union by rank.
+   */
+    
     public void union(int x, int y)
     {
         int setX = findSet(x);
