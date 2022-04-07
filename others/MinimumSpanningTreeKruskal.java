@@ -120,7 +120,7 @@ public class MinimumSpanningTreeKruskal
                     //add it to our final result
                 	resultEdgeList.add(edge);
                 	
-                    parent[y] = x;  // update parent as part of union operation
+                    parents[y] = x;  // update parent as part of union operation
                 	
                     cost += edge.weight;
                 }
