@@ -168,3 +168,15 @@ public class MinimumSpanningTreeKruskal
     
 
 }
+
+/* For a graph with E edges and V vertices, 
+
+the above algorithm will take O(EV) time as  findRoot takes O(V) time in case the graph is skewed.
+
+1. Sort the edges by weight using a priority queue in O(E log V) time
+2. Union-findRoot takes O(EV) time in case the graph is skewed. For each edge we need to do two 'find' operations and  one union (if cycle not created)
+O(EV) is dominant term here
+
+we can run Kruskal's algorithm in O(E log V) time if we improve findRoot to take O(logV) time using union by rank 
+
+*/
