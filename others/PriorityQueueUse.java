@@ -96,7 +96,7 @@ public class PriorityQueueUse
         System.out.println("Removing elements one by one");
         while (!pqueueMaxHeap.isEmpty()) 
         {
-            System.out.println("removed: " + pqueueMaxHeap.remove());
+            System.out.println("removed: " + pqueueMaxHeap.poll());
         }
 	}
 	
@@ -107,13 +107,18 @@ public class PriorityQueueUse
 	    System.out.println();
 	    System.out.println("****Java Priority queue custom object example***");
         
-        PriorityQueue<Task> maxHeap2 = new PriorityQueue<>(new Comparator<Task>(){
-        	 
-            @Override
-            public int compare(Task o1, Task o2) {
-                return o2.priority.compareTo(o1.priority);
-            }
-        });
+        PriorityQueue< Task>  maxHeap2 = new PriorityQueue<>(new Comparator<Task>() {
+        @Override
+        public int compare(Task o1,  Task o2)
+        {
+            if(o2.priority < o1.priority)
+                return -1;
+            else if(o2.priority == o1.priority)  
+                return 0;
+            else
+                return 1;
+        }     
+    });
  
         // add objects one by one
         for(int i = 0; i < 5; i++) {
@@ -138,7 +143,7 @@ public class PriorityQueueUse
 	}
 	
 	
-	class Task implements Comparable<Task> 
+	class Task
 	{
 	    Double priority;
 	    String name;
@@ -147,12 +152,6 @@ public class PriorityQueueUse
 	        this.priority = priority;
 	        this.name = name;
 	    }
-	 
-	    @Override
-	    public int compareTo(Task o) {
-	        return priority.compareTo(o.priority);
-	    }
-	 
 	} 
 
 }
