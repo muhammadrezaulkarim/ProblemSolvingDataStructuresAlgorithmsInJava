@@ -1,0 +1,72 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.*;
+
+public class HighThroughputLogger
+{
+   HashMap<String, Integer> map = new HashMap<String, Integer>();
+    
+
+    public void log(String topic)
+    {
+        System.out.println("Topic:" + topic);
+
+        Integer count = map.get(topic);
+
+        if(count == null)
+            map.put(topic, 1);
+        else
+             map.put(topic, count + 1);
+    }
+
+    public void getTop(int k)
+    {
+
+        List<TopicStat> list = new ArrayList<TopicStat>();
+
+        for(Map.Entry<String, Integer> entry : map.entrySet())
+        {
+            TopicStat topicStat = new TopicStat(entry.getKey(), entry.getValue());
+            list.add(topicStat);
+        }
+
+       // Collections.sort(list, Collections.reverseOrder());
+        Collections.sort(list, new Comparator<TopicStat>() {          
+            @Override
+            public int compare(TopicStat o1, TopicStat o2) {
+                return o2.count.compareTo(o1.count);
+            }
+        });
+
+
+        for(int i =0; i <k; i++)
+        {
+            System.out.println(list.get(i).topic + ":" + list.get(i).count);
+        }
+
+    }
+
+    public static void main(String[] args) {
+
+        HighThroughputLogger log = new HighThroughputLogger();
+       
+        log.log("A");
+        log.log("B");
+        log.log("B");
+        log.log("C");
+
+        log.getTop(2);     
+    }
+
+    private class TopicStat
+    {
+        private String topic;
+        private Integer count;
+
+        public TopicStat(String topic, Integer count)
+        {
+            this.topic = topic;
+            this.count = count;
+        }
+    }
+}
