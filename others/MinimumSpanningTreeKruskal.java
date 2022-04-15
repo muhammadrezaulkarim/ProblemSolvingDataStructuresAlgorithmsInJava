@@ -3,14 +3,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-
 public class MinimumSpanningTreeKruskal 
 {
 	
     public static void main(String[] args) 
     {
-
-        
+      
         MinimumSpanningTreeKruskal ob = new MinimumSpanningTreeKruskal();
 		ob.computeSpanningTree();
     }
@@ -34,7 +32,7 @@ public class MinimumSpanningTreeKruskal
     
     
 	
-    class Edge implements Comparable<Edge> 
+    class Edge
     {
         int src;
         int dest;
@@ -45,14 +43,7 @@ public class MinimumSpanningTreeKruskal
             this.src = src;
             this.dest = dest;
             this.weight = weight;
-        }
-        
-        @Override
-   	    public int compareTo(Edge o) 
-        {
-   	        return this.weight.compareTo(o.weight);
-   	    }
-       
+        }   
     }
 
     class Graph 
@@ -96,9 +87,7 @@ public class MinimumSpanningTreeKruskal
             //add all the edges to priority queue, //sort the edges on weights
             for (int i = 0; i <edgeList.size() ; i++) {
             	minPrioQueue.add(edgeList.get(i));
-            }
-
-            
+            }     
             
             ArrayList<Edge> resultEdgeList = new ArrayList<>();
 
@@ -140,11 +129,7 @@ public class MinimumSpanningTreeKruskal
    */
     // Gets parent of node x.
     public int findRoot(int parents[], int x)
-    {
-        // find the root of the equivalent set containing x  
-        if( parents[x] == x)
-            return x;
-        
+    {     
         while(parents[x] != x)
         {
            x =  parents[x];
