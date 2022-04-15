@@ -1,64 +1,46 @@
-//There is a subset A of n positive integers and a value sum. 
-//Find whether or not there exists any subset of the given set, 
-//the sum of whose elements is equal to the given value of sum
+import java.util.*;
 
+public class DynamicSumOfSubset {
+    public static void main(String[] args) {
+        int target = 22;
+        // int num[] = {1, 6, 11, 6}; // true
 
-public class DynamicSubsetSum 
-{
-	public static boolean [][] solutionExists = null;
-	
-    public static void main(String[] args) 
-    {
-    	int array[] = {92, 40, 63, 51, 36,41,41,42};
-    	int targetSum = 154;
-    	
-    
-    	
-    	DynamicSubsetSum  ob = new DynamicSubsetSum();
-        System.out.println(ob.subsetSum(array, array.length,targetSum));
+        int num[] = { 2, 5, 8, 6, 8, 1 }; // true
+
+        // int num[] = {2, 6, 7}; //false
+
+        DynamicSumOfSubset ob = new DynamicSumOfSubset();
+        System.out.println(ob.sumOfSubset(num, target));
     }
-    
-    boolean subsetSum(int array[],int n, int targetSum)
-    {
-    	solutionExists = new boolean[n +1][targetSum+1];
-    	
-        //solutionExists[i][j] indicates whether there is a subset of sum j in the subarray array[0....i-1]
-     
-        int i=0,j=0;
-     
-        //for sum=0, there is always a subset possible (the empty set)
-        for(i=0;i<=n;i++)
-        	solutionExists[i][0]=true;
-     
-        //if there are no elements in the array, no subset is possible for a non-zero sum
-        for(j=1;j<=targetSum;j++)
-        	solutionExists[0][j]=false;
-     
-        //i represents the number of elements of array considered
-        for(i=1;i<=n;i++)
-        {
-            //j represents the sum of subset being searched for
-            for(j=1;j<=targetSum;j++)
-            {
-                //if using i-1 elements, there is a subset of desired sum no need to search further
-                if(solutionExists[i-1][j]==true)
-                	solutionExists[i][j]=true;
-     
-                else
+
+    boolean sumOfSubset(int[] num, int targetSum) {
+
+        // flag indicating the results
+        boolean[][] sumPossible = new boolean[num.length][targetSum + 1];
+
+        // sumPossible[i][j] denotes whether sum j is possible
+        // with items upto i
+
+        for (int i = 0; i < num.length; i++) {
+            for (int sum = 0; sum <= targetSum; sum++) {
+                // num[i] can included in the sum as it is bigger than the sum
+                if (num[i] <= sum) {
+
+                    if (sum == num[i]) {
+                        sumPossible[i][sum] = true; // by default the flag is false
+                    }
+
+                    if (i > 0) // perform or operation
+                        sumPossible[i][sum] = sumPossible[i][sum] || sumPossible[i - 1][sum - num[i]];
+                } else // num[i] cannot be included in the sum as it is bigger
                 {
-                    //if value of current element is greater than the required sum
-                    //this element cannot be considered
-                    if(array[i-1]>j)
-                    	solutionExists[i][j]=false;
-                        //check that after including this element, Is there any subset present for the remaining sum ie., j-array[i-1]
-                    else
-                    	solutionExists[i][j]=solutionExists[i-1][j-array[i-1]];
+                    if (i > 0)
+                        sumPossible[i][sum] = sumPossible[i - 1][sum];
                 }
             }
         }
-     
-        //return the overall result
-        return solutionExists[n][targetSum];
+
+        return sumPossible[num.length - 1][targetSum];
     }
 
 }
