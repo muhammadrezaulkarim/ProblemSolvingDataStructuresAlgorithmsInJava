@@ -1,82 +1,82 @@
 import java.util.*;
 
-public class DynamicPartitionEqualSumTwoSubset
-{
-    public static void main(String[] args) 
-    {
-    //	int num[] = {1, 6, 11, 6};  // true
-    
-        int num[] = {2, 5, 8, 6, 8, 1}; // true
-    
-    	//int num[] = {2, 6, 7};  //false
-    
-    	DynamicPartitionEqualSumTwoSubset ob = new DynamicPartitionEqualSumTwoSubset();
+public class DynamicPartitionEqualSumTwoSubset {
+    public static void main(String[] args) {
+        int num[] = { 1, 6, 11, 6 }; // true
+
+        // int num[] = {2, 5, 8, 6, 8, 1}; // true
+
+        // int num[] = {2, 6, 7}; //false
+
+        DynamicPartitionEqualSumTwoSubset ob = new DynamicPartitionEqualSumTwoSubset();
         System.out.println(ob.dynamicTwoSubsets(num));
     }
-    
-    boolean dynamicTwoSubsets(int [] num)
-    {
+
+    boolean dynamicTwoSubsets(int[] array) {
         int total = 0;
-        
-        for(int i=0; i<num.length; i++)
-        {
-            total += num[i];
+
+        for (int i = 0; i < array.length; i++) {
+            total += array[i];
         }
-        
-       // If the sum is an odd number we cannot possibly have two equal sets.
-        if(total % 2 != 0)
+
+        // If the sum is an odd number we cannot possibly have two equal sets.
+        if (total % 2 != 0)
             return false;
-      
-        // We know that if we find a subset that equals sum/2, the rest of the numbers must equal sum/2
+
+        // We know that if we find a subset that equals sum/2, the rest of the numbers
+        // must equal sum/2
         // so we’re good since they will both be equal to sum/2.
-        
-        int maxSum = total/2;
-        
-        //flag indicating the results
-        boolean [][] sumPossible = new boolean[num.length][maxSum+1];
-        
-        // sumPossible[i][j] denotes whether sum j is possible
-        // with items upto i
-        
-        for(int i=0; i<num.length; i++)
-        {
-            for(int sum=0; sum<=maxSum; sum++)
-            {
-                 // num[i] can included in the sum as it is bigger than the sum
-                 if(num[i] <= sum)
-                 {
-                    
-                    if(sum == num[i])
-                    {
-                        sumPossible[i][sum] = true;  // by default the flag is false
-                    }
-             
-                    
-                    if(i>0) // perform or operation
-                       sumPossible[i][sum] = sumPossible[i][sum] || sumPossible[i-1][sum - num[i]];
-                 }
-                 else  // num[i] cannot be included in the sum as it is bigger
-                 {
-                    if (i>0)
-                        sumPossible[i][sum] = sumPossible[i-1][sum];
-                 }
+
+        int targetSum = total / 2;
+        int n = array.length;
+
+        boolean[][] solutionExists = new boolean[n + 1][targetSum + 1];
+
+        // solutionExists[i][j] indicates whether sum j can be attained
+        // using items up to first `i` items in the array
+
+        int i = 0, j = 0;
+
+        // for sum=0, there is always a subset possible (the empty set)
+        for (i = 0; i <= n; i++)
+            solutionExists[i][0] = true;
+
+        // i represents the number of elements of array considered
+        for (i = 1; i <= n; i++) {
+            // j represents the sum of subset being searched for
+            for (j = 1; j <= targetSum; j++) {
+
+                // if value of i'th item is greater than the required sum
+                // this element cannot be considered
+                if (array[i - 1] > j)
+                    solutionExists[i][j] = solutionExists[i - 1][j];
+                else
+                    // find the subset with sum `j` by excluding or including
+                    // the i'th item
+                    solutionExists[i][j] = solutionExists[i - 1][j] || solutionExists[i - 1][j - array[i - 1]];
+
             }
         }
-        
-        return sumPossible[num.length-1][maxSum];
+
+        // return the overall result
+        return solutionExists[n][targetSum];
     }
 
 }
 
-/* Given a non-empty array of positive integers arr[]. Write a program to find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
-
-Example 1
-
-Input: arr[] = [1, 6, 11, 6] 
-Output: true  
-Explanation: The array can be partitioned as [6, 6] and [1, 11].
-Example 2
-
-Input: arr[] = [2, 6, 7]
-Output: false
-Explanation: The array cannot be partitioned into equal sum sets */
+/*
+ * Given a non-empty array of positive integers arr[]. Write a program to find
+ * if the array can be partitioned into two subsets such that the sum of
+ * elements in both subsets is equal.
+ * 
+ * Example 1
+ * 
+ * Input: arr[] = [1, 6, 11, 6]
+ * Output: true
+ * Explanation: The array can be partitioned as [6, 6] and [1, 11].
+ * Example 2
+ * 
+ * Input: arr[] = [2, 6, 7]
+ * Output: false
+ * Explanation: The array cannot be partitioned into equal sum sets
+ */
