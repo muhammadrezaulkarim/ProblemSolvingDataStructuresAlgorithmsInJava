@@ -70,10 +70,7 @@ public class UnionFindReligions
     public int findSet(int x)
     {
         // find the root of the equivalent set containing x
-        
-        if(set[x] == x)
-            return x;
-        
+           
         while(set[x] != x)
         {
          x = set[x];
