@@ -6,10 +6,11 @@ public class BinaryTreeKSumPaths {
 	private int pathCount = 0;
 
 	// display a path
-	public void displayPath(List<Integer> v, int i)
+	public void displayPath()
 	{
-		for (int j = i; j < v.size(); j++)
-			System.out.print(v.get(j) + " ");
+		for (int i = 0; i < path.size(); i++)
+			System.out.print(path.get(i) + " ");
+		
 		System.out.println();
 	}
 
@@ -45,7 +46,7 @@ public class BinaryTreeKSumPaths {
 			if (sum == k)
 			{
 				pathCount++;
-				//displayPath(path, j);
+				displayPath();
 			}
 		}
 
@@ -112,4 +113,4 @@ i.e. they need not be root node and leaf node; and negative numbers can also be 
 The basic idea to solve the problem is to do a preorder traversal of the given tree. 
 We also need a container (vector) to keep track of the path that led to that node. 
 At each node we check if there are any path that sums to k, 
-if any we print the path and proceed recursively to print each path. */
+if any we increment path count */
