@@ -98,4 +98,12 @@ Output:
 1 2 3 5
 1 2 3 4 
 
+Complexity Analysis: 
+
+Time Complexity: O( n * k )
+In each traversal the temp array of size k is traversed, So the time Complexity is O( n * k ).
+
+Space Complexity:  O(n) 
+To store the elements in HashMap O(n) space is required.
+
 */
