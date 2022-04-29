@@ -40,6 +40,11 @@ public class DynamicPartitionEqualSumTwoSubset {
         // for sum=0, there is always a subset possible (the empty set)
         for (i = 0; i <= n; i++)
             solutionExists[i][0] = true;
+            
+        // If sum is not 0 and set of numbers is empty,
+        // then answer is false
+        for (i = 0; i <= targetSum; i++)
+           solutionExists[0][i] = false;
 
         // i represents the number of elements of array considered
         for (i = 1; i <= n; i++) {
