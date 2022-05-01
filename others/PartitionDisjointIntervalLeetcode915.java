@@ -1,14 +1,7 @@
 class PartitionDisjointIntervalLeetcode915 {
+  
   public int partitionDisjoint(int[] nums) {
-
-    int[] maxLeft = new int[nums.length];
-    int[] minRight = new int[nums.length];
-
-    // compute maximum upto each index starting from the beginning
-    maxLeft[0] = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-      maxLeft[i] = Math.max(maxLeft[i - 1], nums[i]);
-    }
+    int [] minRight = new int[nums.length];
 
     // compute minimum upto each index starting from the end
     minRight[nums.length - 1] = nums[nums.length - 1];
@@ -19,8 +12,12 @@ class PartitionDisjointIntervalLeetcode915 {
 
     int index = 0;
 
+    int maxLeft = nums[0];
     for (int i = 0; i < nums.length - 1; i++) {
-      if (maxLeft[i] <= minRight[i + 1]) {
+      // compute max upto this index from the left
+      maxLeft = Math.max(maxLeft, nums[i]);
+
+      if (maxLeft <= minRight[i + 1]) {
         index = i;
         break;
       }
