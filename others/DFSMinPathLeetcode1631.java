@@ -1,39 +1,26 @@
 class DFSMinPathLeetcode1631 {
     int nRows, nCols;
-    boolean[][] visited;
-    int minEffort;
+    int[][] minEffort;
 
     public int minimumEffortPath(int[][] heights) {
         nRows = heights.length;
         nCols = heights[0].length;
 
-        visited = new boolean[nRows][nCols];
+        minEffort = new int[nRows][nCols];
 
-        minEffort = Integer.MAX_VALUE;
+        // effort needed to reach from [0,0] to current cell
+        for (int i = 0; i < nRows; i++)
+            for (int j = 0; j < nCols; j++)
+                minEffort[i][j] = Integer.MAX_VALUE;
 
-        dfs(0, 0, heights, heights[0][0], Integer.MIN_VALUE);
+        minEffort[0][0] = 0; // set for start cell
 
-        return minEffort;
+        dfs(0, 0, heights);
+
+        return minEffort[nRows - 1][nCols - 1];
     }
 
-    public void dfs(int row, int col, int[][] heights, int prevHeight, int maxHeightDiff) {
-
-        visited[row][col] = true;
-
-        int currentHeightDiff = Math.abs(prevHeight - heights[row][col]);
-
-        if (currentHeightDiff > maxHeightDiff)
-            maxHeightDiff = currentHeightDiff;
-
-        if (row == nRows - 1 && col == nCols - 1) {
-            if (maxHeightDiff < minEffort)
-                minEffort = maxHeightDiff;
-
-            visited[row][col] = false;
-
-            return;
-        }
-
+    public void dfs(int row, int col, int[][] heights) {
         int[] rowOffsets = { 0, 0, -1, 1 };
         int[] colOffsets = { -1, 1, 0, 0 };
 
@@ -41,12 +28,21 @@ class DFSMinPathLeetcode1631 {
             int nextRow = row + rowOffsets[i];
             int nextCol = col + colOffsets[i];
 
-            if (isWithinBounds(nextRow, nextCol) && !visited[nextRow][nextCol])
-                dfs(nextRow, nextCol, heights, heights[row][col], maxHeightDiff);
+            if (isWithinBounds(nextRow, nextCol)) {
+                int currentCellHeightDiff = Math.abs(heights[row][col] - heights[nextRow][nextCol]);
+                // maximum of effort needed to reach from [0,0] to current cell
+                // or effort needed to climb to next cell
+                int currentCellEffort = Math.max(minEffort[row][col], currentCellHeightDiff);
 
+                // we found better path (path that takes less effort)
+                // prune the search space. perform further search only if better path found
+                if (currentCellEffort < minEffort[nextRow][nextCol]) {
+                    minEffort[nextRow][nextCol] = currentCellEffort;
+                    dfs(nextRow, nextCol, heights);
+                }
+
+            }
         }
-
-        visited[row][col] = false;
     }
 
     public boolean isWithinBounds(int row, int col) {
@@ -65,10 +61,14 @@ class DFSMinPathLeetcode1631 {
          * 
          * int[][] grid = {
          * {1,2,3},{3,8,4},{5,3,5}};
+         * 
+         * 
+         * int[][] grid = {
+         * { 1, 2, 2 }, { 3, 8, 2 }, { 5, 3, 5 } };
          */
 
         int[][] grid = {
-                { 1, 2, 2 }, { 3, 8, 2 }, { 5, 3, 5 } };
+                { 1, 10, 6, 7, 9, 10, 4, 9 } };
 
         DFSMinPathLeetcode1631 ob = new DFSMinPathLeetcode1631();
         System.out.println(ob.minimumEffortPath(grid));
