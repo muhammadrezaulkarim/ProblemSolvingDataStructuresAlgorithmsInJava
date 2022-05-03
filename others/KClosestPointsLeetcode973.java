@@ -1,14 +1,16 @@
 import java.util.*;
 
 class KClosestPointsLeetcode973 {
-    PriorityQueue<Point> pQueue = new PriorityQueue<Point>(new Comparator<Point>() {
-        @Override
-        public int compare(Point p1, Point p2) {
-            return p1.getDistance().compareTo(p2.getDistance());
-        }
-    });
+    PriorityQueue<Point> pQueue;
 
     public int[][] kClosest(int[][] points, int k) {
+
+        pQueue = new PriorityQueue<Point>(k, new Comparator<Point>() {
+            @Override
+            public int compare(Point p1, Point p2) {
+                return p1.getDistance().compareTo(p2.getDistance());
+            }
+        });
 
         for (int i = 0; i < points.length; i++) {
             Point p = new Point(points[i][0], points[i][1]);
@@ -98,4 +100,8 @@ class KClosestPointsLeetcode973 {
  * Output: [[3,3],[-2,4]]
  * Explanation: The answer [[-2,4],[3,3]] would also be accepted.
  * 
+ * 
+ * Time complexity: O(nlogk)
+ * Space Complexity: O(k) wher k is the number of elements stored in the
+ * priority queue
  */
