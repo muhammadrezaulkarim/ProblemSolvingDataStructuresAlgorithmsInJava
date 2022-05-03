@@ -2,15 +2,11 @@ import java.util.*;
 
 class KClosestPointsLeetcode973 {
     PriorityQueue<Point> pQueue = new PriorityQueue<Point>(new Comparator<Point>() {
-
         @Override
         public int compare(Point p1, Point p2) {
             return p1.getDistance().compareTo(p2.getDistance());
         }
-
-    }
-
-    );
+    });
 
     public int[][] kClosest(int[][] points, int k) {
 
@@ -43,7 +39,7 @@ class KClosestPointsLeetcode973 {
         }
 
         public void computeDistance() {
-            this.distance = Math.sqrt((0 - this.x) * (0 - this.x) + (0 - this.y) * (0 - this.y));
+            this.distance = Math.sqrt(Math.pow((0 - this.x), 2) + Math.pow((0 - this.y), 2));
         }
 
         public Double getDistance() {
