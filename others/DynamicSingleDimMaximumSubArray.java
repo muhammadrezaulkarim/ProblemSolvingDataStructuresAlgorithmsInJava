@@ -1,26 +1,20 @@
-import java.util.Arrays;
-
 public class DynamicSingleDimMaximumSubArray {
 
     // bottom up approach
     public int solve(int[] a) {
         int[] solution = new int[a.length];
+        
         solution[0] = a[0];
+        int max = solution[0];
 
         for (int j = 1; j < solution.length; j++) {
             solution[j] = Math.max(solution[j - 1] + a[j], a[j]);
+
+            if(solution[j] > max)
+                max = solution[j];
         }
 
-        // this will print the solution matrix
-        // System.out.println(Arrays.toString(solution));
-        // now return the maximum in the solution array
-        int result = solution[0];
-        for (int j = 1; j < solution.length; j++) {
-            if (solution[j] > result)
-                result = solution[j];
-        }
-
-        return result;
+        return max;
     }
 
     public static void main(String[] args) {
