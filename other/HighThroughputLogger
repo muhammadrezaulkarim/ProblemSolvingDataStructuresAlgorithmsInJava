@@ -1,5 +1,3 @@
-package interviewpractice;
-
 import java.util.*;
 
 public class HighThroughputLogger {
