@@ -1,5 +1,3 @@
-package interviewpractice;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -7,7 +5,7 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
-public class JavaNewerTimeDateOperations {
+public class DateTimeOperationsJava8AndUpper {
 	public static void main(String args[]) {
 		// UTC date time
 		Instant instant = Instant.now();
