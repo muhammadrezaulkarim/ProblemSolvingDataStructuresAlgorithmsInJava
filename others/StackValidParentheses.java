@@ -12,6 +12,7 @@ class StackValidParentheses {
                 st.push(c);
             else if (c == ')') {
                 // no matching '(' pushed earlier
+                // peek() operation throws exception if the stack is empty
                 if (!st.isEmpty() && st.peek() == '(')
                     st.pop();
                 else
