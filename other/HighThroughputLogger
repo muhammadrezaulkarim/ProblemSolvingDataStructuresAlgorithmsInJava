@@ -1,72 +1,115 @@
-import java.util.ArrayList;
-import java.util.Comparator;
+package interviewpractice;
+
 import java.util.*;
 
-public class HighThroughputLogger
-{
-   HashMap<String, Integer> map = new HashMap<String, Integer>();
-    
+public class HighThroughputLogger {
 
-    public void log(String topic)
-    {
-        System.out.println("Topic:" + topic);
+	Map<String, Integer> map = new HashMap<String, Integer>();
+	// required when you we do not use stream api for sorting
+	List<TopicStat> topicStats = new ArrayList<TopicStat>();
 
-        Integer count = map.get(topic);
+	public void logTopic(String topic) {
 
-        if(count == null)
-            map.put(topic, 1);
-        else
-             map.put(topic, count + 1);
-    }
+		int count = map.getOrDefault(topic, 0);
 
-    public void getTop(int k)
-    {
+		map.put(topic, count + 1);
 
-        List<TopicStat> list = new ArrayList<TopicStat>();
+		topicStats.add(new TopicStat(topic, count + 1));
 
-        for(Map.Entry<String, Integer> entry : map.entrySet())
-        {
-            TopicStat topicStat = new TopicStat(entry.getKey(), entry.getValue());
-            list.add(topicStat);
-        }
+	}
 
-       // Collections.sort(list, Collections.reverseOrder());
-        Collections.sort(list, new Comparator<TopicStat>() {          
-            @Override
-            public int compare(TopicStat o1, TopicStat o2) {
-                return o2.count.compareTo(o1.count);
-            }
-        });
+	public void printAll() {
+		/*
+		 * for (Map.Entry<String, Integer> entry : map.entrySet()) {
+		 * System.out.println(String.format("Topic: %s , Count: %s", entry.getKey(),
+		 * entry.getValue())); }
+		 */
 
+		map.entrySet().forEach(
+				(entry) -> System.out.println(String.format("Topic: %s Count: %s", entry.getKey(), entry.getValue())));
+	}
 
-        for(int i =0; i <k; i++)
-        {
-            System.out.println(list.get(i).topic + ":" + list.get(i).count);
-        }
+	public void printTop5TopicInAscendingOrder() {
+		/*
+		 * topicStats.sort(new Comparator<TopicStat>() {
+		 * 
+		 * @Override public int compare(TopicStat o1, TopicStat o2) { return
+		 * o1.count.compareTo(o2.count); }
+		 * 
+		 * });
+		 */
+		
+		topicStats.sort((TopicStat o1, TopicStat o2) -> o1.count.compareTo(o2.count));
 
-    }
+		topicStats.stream().limit(5)
+				.forEach((entry) -> System.out.println(String.format("Topic: %s Count: %s", entry.topic, entry.count)));
+	}
+	
+	public void printTop5TopicInAscendingOrderFunctional() {
+		
+		List<Map.Entry<String, Integer>> sortedEntryList = map.entrySet().stream().sorted(Map.Entry.comparingByValue()).toList();
+		
+		sortedEntryList.stream().limit(5) // only top 5 considered
+		.forEach((entry) -> System.out
+				.println(String.format("Topic: %s Count: %s", entry.getKey(), entry.getValue())));
 
-    public static void main(String[] args) {
+	}
 
-        HighThroughputLogger log = new HighThroughputLogger();
-       
-        log.log("A");
-        log.log("B");
-        log.log("B");
-        log.log("C");
+	public void printTop5TopicInDescendingOrder() {
 
-        log.getTop(2);     
-    }
+		/*
+		 * topicStats.sort(new Comparator<TopicStat>() {
+		 * 
+		 * @Override public int compare(TopicStat o1, TopicStat o2) { return
+		 * o2.count.compareTo(o1.count); } });
+		 */
+		
+		topicStats.sort((TopicStat o1, TopicStat o2) -> o1.count.compareTo(o2.count));
 
-    private class TopicStat
-    {
-        private String topic;
-        private Integer count;
+		topicStats.stream().limit(5) // considers only the top 5 elements of the list
+				.forEach((entry) -> System.out.println(String.format("Topic: %s Count: %s", entry.topic, entry.count)));
 
-        public TopicStat(String topic, Integer count)
-        {
-            this.topic = topic;
-            this.count = count;
-        }
-    }
+	}
+
+	public void printTop5TopicInDescendingOrderFunctional() {
+
+		List<Map.Entry<String, Integer>> sortedEntryList = map.entrySet().stream()
+				.sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).toList();
+
+		sortedEntryList.stream().limit(5) // only top 5 considered
+				.forEach((entry) -> System.out
+						.println(String.format("Topic: %s Count: %s", entry.getKey(), entry.getValue())));
+
+	}
+
+	public static void main(String args[]) {
+		HighThroughputLogger obj = new HighThroughputLogger();
+
+		obj.logTopic("A");
+		obj.logTopic("B");
+		obj.logTopic("A");
+		obj.logTopic("B");
+		obj.logTopic("C");
+		obj.logTopic("E");
+		obj.logTopic("D");
+		obj.logTopic("F");
+		obj.logTopic("G");
+
+		// obj.printAll();
+		// obj.printTop5TopicInDescendingOrder();
+		obj.printTop5TopicInDescendingOrderFunctional();
+		//obj.printTop5TopicInAscendingOrder();
+		//obj.printTop5TopicInAscendingOrderFunctional();
+	}
+
+	// required when you we do not use stream api for sorting
+	private class TopicStat {
+		String topic;
+		Integer count;
+
+		public TopicStat(String topic, int count) {
+			this.topic = topic;
+			this.count = count;
+		}
+	}
 }
