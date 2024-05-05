@@ -30,7 +30,7 @@ class MaximumSumContiguosSubArraySizeK {
       // current window.
       for(;i<array.length; i++)
       {
-        currentWindowSum =  maxSum - array[i-k] + array[i];
+        currentWindowSum =  currentWindowSum - array[i-k] + array[i];
 
         maxSum = Math.max(maxSum, currentWindowSum);
       }
