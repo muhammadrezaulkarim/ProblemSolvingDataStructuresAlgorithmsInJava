@@ -17,7 +17,8 @@ public class StackUse
 		//st.isEmpty()
 		//System.out.println(st.size());  // print the current size
 		 st.clear();
-		
+
+		//// peek() operation throws exception if the stack is empty
 		//System.out.println(st.peek()); // inspect the top of the stack but do not remove it
 		
 		System.out.println(st.size()); 
