@@ -1,0 +1,54 @@
+import java.util.Arrays;
+
+class TwoSumTwoPointers {
+    public void pairExist(int nums[], int sum) {
+        Arrays.sort(nums);
+
+        int start = 0, end = nums.length - 1;
+
+        while (start < end) {
+            if (nums[start] + nums[end] > sum)
+                end--;
+            else if (nums[start] + nums[end] < sum)
+                start++;
+            else if (nums[start] + nums[end] == sum) {
+                System.out.println("Yes! A pair exist");
+                return;
+            }
+        }
+
+        System.out.println("No pair exist");
+    }
+
+    public static void main(String[] args) {
+        TwoSumTwoPointers ob = new TwoSumTwoPointers();
+        int nums[] = { 1, 4, 45, 6, 10, 8 };
+
+        // int n = 16;
+        int n = 50;
+        ob.pairExist(nums, n);
+    }
+}
+/*
+ * Time Complexity: O(NlogN), Time complexity for sorting the array
+ * Auxiliary Space: O(1)
+ * 
+ * The idea is to use the two-pointer technique. But for using the two-pointer
+ * technique, the array must be sorted.
+ * Once the array is sorted the two pointers can be taken which mark the
+ * beginning and end of the array respectively.
+ * 
+ * If the sum is greater than the sum of those two elements, shift the right
+ * pointer to decrease the value of the required sum
+ * and if the sum is lesser than the required value, shift the left pointer to
+ * increase the value of the required sum.
+ * 
+ * When the sum is less than the required sum, increasing the left pointer get
+ * the number which increase the current sum of pair
+ * When the sum is greater than the required sum, decreasing the right pointer
+ * get the number which decrease the sum of pair
+ * 
+ * // This solution does not deal with duplicates. For dealing with duplictate
+ * pairs, please refer to problem 16.24
+ * in the cracking the coding interview book
+ */
