@@ -32,12 +32,19 @@ class DFSIslandsLeetcode200 {
             int nextRow = row + rowOffsets[i];
             int nextCol = col + colOffsets[i];
 
-            if (nextRow >= 0 && nextRow < nRows
-                    && nextCol >= 0 && nextCol < nCols
-                    && grid[nextRow][nextCol] == '1' && !visited[nextRow][nextCol]) {
-                dfs(nextRow, nextCol, grid);
+            if (isWithinBounds(nextRow, nextCol)) {
+                if (grid[nextRow][nextCol] == '1' && !visited[nextRow][nextCol]) {
+                    dfs(nextRow, nextCol, grid);
+                }
             }
         }
+    }
+
+    public boolean isWithinBounds(int row, int col) {
+        if (row >= 0 && row < nRows && col >= 0 && col < nCols)
+            return true;
+
+        return false;
     }
 
     public static void main(String[] args) {
