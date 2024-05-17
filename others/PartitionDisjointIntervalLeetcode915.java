@@ -24,7 +24,7 @@ class PartitionDisjointIntervalLeetcode915 {
             // ensure that every element in left partition is less than or equal to every
             // element in right partition
 
-            // please note we compare index with index i+1 as we partition the array
+            // please note we compare index with index i+1 as we partition the array into two subarrays
             if (maxLeft[i] <= minRight[i + 1]) {
                 index = i;
                 break;
