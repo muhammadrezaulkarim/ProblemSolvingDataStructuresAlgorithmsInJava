@@ -17,29 +17,28 @@ public class SlidingWindowMaximumSumDistinctSubarraySizeKLeetcode2461 {
 
             // If number already exists in hashset,
             // we need to advance to consider the next subarray starting at the next index
-            while (uniqueNumbers.contains(val)) {
+            if (uniqueNumbers.contains(val)) {
                 sum -= nums[start];
                 uniqueNumbers.remove(nums[start]);
                 start++;
             }
+            else {
+                // At this point we are sure the number is not duplicate. so add it
+                uniqueNumbers.add(val);
+                sum += val;
 
-            // At this point we are sure the number is not duplicate
-            uniqueNumbers.add(val);
-            sum += val;
+                // subarray is of the desired length
+                if (end - start + 1 == k) {
+                    maxSum = Math.max(maxSum, sum);
 
-            // subarray is of the desired length
-            if (end - start + 1 == k) {
-                maxSum = Math.max(maxSum, sum);
+                    // Prepare to consider the subarray staring at the next index
+                    sum -= nums[start];
+                    uniqueNumbers.remove(nums[start]);
+                    // consider from the next starting point
+                    start++;
+                }
 
-                // Prepare to consider the subarray staring at the next index
-                sum -= nums[start];
-                uniqueNumbers.remove(nums[start]);
-                // consider from the next starting point
-                start++;
-
-                end++;
-            } else {
-                end++;
+                end++;  // increase end only if the current number does not violate any condition
             }
 
         }
@@ -48,11 +47,13 @@ public class SlidingWindowMaximumSumDistinctSubarraySizeKLeetcode2461 {
     }
 
     public static void main(String[] args) {
-        // int [] nums = {1,5,4,2,9,9,9};
-        int[] nums = { 4, 4, 4 };
+        int [] nums = {1,5,4,2,9,9,9}; //expected result 15
+        //int [] nums = {1,1,1,7,8,9};  // expected result 24
+        //int[] nums = { 4, 4, 4 };  // expected result 0
+        int k=3;
 
         SlidingWindowMaximumSumDistinctSubarraySizeKLeetcode2461 ob = new SlidingWindowMaximumSumDistinctSubarraySizeKLeetcode2461();
-        System.out.println(ob.maximumSubarraySum(nums, 3));
+        System.out.println(ob.maximumSubarraySum(nums, k));
     }
 }
 
