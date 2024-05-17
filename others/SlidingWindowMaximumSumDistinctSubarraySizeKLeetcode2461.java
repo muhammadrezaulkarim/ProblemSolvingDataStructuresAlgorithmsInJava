@@ -20,7 +20,7 @@ public class SlidingWindowMaximumSumDistinctSubarraySizeKLeetcode2461 {
             if (uniqueNumbers.contains(val)) {
                 sum -= nums[start];
                 uniqueNumbers.remove(nums[start]);
-                start++;
+                start++; // increase start only if the current character violate condition
             }
             else {
                 // At this point we are sure the number is not duplicate. so add it
