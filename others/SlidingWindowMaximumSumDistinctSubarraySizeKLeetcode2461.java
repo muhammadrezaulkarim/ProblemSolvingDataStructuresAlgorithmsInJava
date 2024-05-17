@@ -31,7 +31,9 @@ public class SlidingWindowMaximumSumDistinctSubarraySizeKLeetcode2461 {
                 if (end - start + 1 == k) {
                     maxSum = Math.max(maxSum, sum);
 
-                    // Prepare to consider the subarray staring at the next index
+                    // Please note that solution can be of length k
+                     //Next we need to consider the subarray staring at the next index
+                    //prepare before we consider the next one
                     sum -= nums[start];
                     uniqueNumbers.remove(nums[start]);
                     // consider from the next starting point
