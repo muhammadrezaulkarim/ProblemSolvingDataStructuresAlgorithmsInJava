@@ -20,6 +20,8 @@ public class SlidingWindowLongestSubstringAtLeastKRepeatingChracters {
         // otherwise we use all the infrequent elements as splits
         while (cur < s.length()) {
             if (chars[s.charAt(cur) - 'a'] < k) {
+                // we are splitting at the character cur because this character frequency is less than k
+                // so we cannot have any valid string satisfying the condition frequency(cur) >= k
                 result = Math.max(result, longestSubstring(s.substring(start, cur), k));
                 start = cur + 1;
             }
