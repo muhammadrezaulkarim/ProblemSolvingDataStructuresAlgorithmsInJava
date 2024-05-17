@@ -1,0 +1,116 @@
+public class DFSConnectedComponetLargestBlob {
+	int nRows, nCols;
+	boolean visited[][] = null;
+
+	public int largestBlob(char[][] grid) {
+		nRows = grid.length;
+		nCols = grid[0].length;
+
+		int maxNodeCount = 0, nodecount = 0;
+
+		visited = new boolean[nRows][nCols];
+
+		for (int i = 0; i < nRows; i++) {
+			for (int j = 0; j < nCols; j++) {
+				// if not visited and set to 1 (1 indicates filled cell)
+				if (visited[i][j] == false && grid[i][j] == '1') {
+
+					nodecount = dfs(i, j, grid, 0);
+
+					// keep track of the max blob size
+					maxNodeCount = Math.max(nodecount, maxNodeCount);
+
+				}
+			}
+		}
+
+		return maxNodeCount;
+
+	}
+
+	public int dfs(int row, int col, char[][] grid, int nodecount) {
+		int[] rowOffsets = { -1, -1, -1, 0, 0, 1, 1, 1 };
+		int[] colOffsets = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+		// set visited to true
+		visited[row][col] = true;
+
+		nodecount++;
+
+		// determine the adjacent cells which are considered as children
+		for (int i = 0; i < rowOffsets.length; i++) {
+			int nextRow = row + rowOffsets[i];
+			int nextCol = col + colOffsets[i];
+
+			// must be within the boundary
+			if (isWithinBounds(nextRow, nextCol)) {
+				// if not already visited and the cell is filled
+				if (visited[nextRow][nextCol] == false && grid[nextRow][nextCol] == '1') {
+					int count = dfs(nextRow, nextCol, grid, nodecount);
+
+					// update node count with the max child node count value
+					nodecount = Math.max(count, nodecount);
+				}
+			}
+		}
+
+		return nodecount;
+
+	}
+
+	public boolean isWithinBounds(int row, int col) {
+		if (row >= 0 && row < nRows && col >= 0 && col < nCols)
+			return true;
+
+		return false;
+	}
+
+	public static void main(String args[]) {
+		char[][] grid = {
+				{ '1', '1', '0', '0', '0' },
+				{ '0', '1', '1', '0', '0' },
+				{ '0', '0', '1', '0', '1' },
+				{ '1', '0', '0', '0', '1' },
+				{ '0', '1', '0', '1', '1' }
+		};
+
+		DFSConnectedComponetLargestBlob ob = new DFSConnectedComponetLargestBlob();
+		System.out.println(ob.largestBlob(grid));
+	}
+
+}
+
+/*
+ * 
+ * Consider a two-dimensional grid of cells, each of which may be empty
+ * or filled. Filled cells form blobs. The filled cells that are connected
+ * form the same bigger blob. Two cells are said to be connected if
+ * they are adjacent to each other horizontally, vertically, or diagonally.
+ * There may be several blobs on the grid. Your job is to find the largest
+ * blob (in terms of number of cells) on the grid.
+ * 
+ * Write a program that determines the size of the largest blob for
+ * a given set of blobs.
+ * 
+ * Input
+ * 
+ * The grid is given as a set of strings, each composed of 0's and 1's. The '1'
+ * indicates that the cell is
+ * filled and '0' indicates an empty cell. The strings should be converted into
+ * the grid format.
+ * The largest grid that sould be considered is a 25x25 grid.
+ * 
+ * 
+ * Output
+ * The output is the size of the largest blob found on the grid.
+ * 
+ * Sample Input
+ * 11000
+ * 01100
+ * 00101
+ * 10001
+ * 01011
+ * 
+ * Sample Output
+ * 5
+ */
