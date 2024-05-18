@@ -16,30 +16,16 @@
 class BinaryTreeLeetcode104 {
     public int maxDepth(TreeNode root) {
 
-        if(root == null)
-            return 0;
-
         return pathNodeCount(root);
     }
 
     public int pathNodeCount(TreeNode node)
     {     
-        int count = 0;
-
-        if(node.left==null && node.right==null)
-            count = 1;    
-
-        else if(node.left!=null && node.right==null)
-            count = pathNodeCount(node.left) + 1;
-        
-        else if(node.right!=null && node.left==null)
-           count = pathNodeCount(node.right) + 1;
-
+        if(node == null)
+            return 0; 
         else
-            count = Math.max(pathNodeCount(node.left), pathNodeCount(node.right)) + 1;
+            return Math.max(pathNodeCount(node.left), pathNodeCount(node.right)) + 1;
         
-
-        return count;
     }
 }
 
