@@ -10,8 +10,7 @@ public class DynamicSingleDimMaximumSubArray {
         for (int j = 1; j < solution.length; j++) {
             solution[j] = Math.max(solution[j - 1] + a[j], a[j]);
 
-            if(solution[j] > max)
-                max = solution[j];
+             max = Math.max(solution[j], max);
         }
 
         return max;
