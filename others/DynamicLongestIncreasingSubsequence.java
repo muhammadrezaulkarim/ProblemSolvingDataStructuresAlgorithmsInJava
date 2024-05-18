@@ -24,7 +24,8 @@ public class DynamicLongestIncreasingSubsequence
         for(i=0;i<n;i++)
         	solution[i]=1;
      
-     
+        int maxLength =  solution[0];
+        
         //now, we have to fill this solution array
      
         //we will calulate the value of solution[i] for every 1<=i<=n by checking whether any subsequence
@@ -39,29 +40,20 @@ public class DynamicLongestIncreasingSubsequence
                 //means a[i] can be appended after solution[j]
                 //Since, we are interested in finding the longest of such subsequences, we will consider
                 //only those values of solution[j] that are greater than or equal to solution[i]
-                if(array[i]>array[j] && solution[i]<solution[j]+1)
+                if(array[i]>array[j])
                 {
-                	solution[i]=solution[j]+1;
+                	 solution[i] = Math.max(solution[i], solution[j]+1);
                 }
             }
+
+             maxLength=Math.max(maxLength, solution[i]);
         }
      
         //now, we have calculated all the values of solution[i] for 0<=i<n
         //The length of the longest increasing subsequence of the given array is the maximum of all
         //these values because the longest increasing subsequence can end with any element of the array
      
-        //finding maximum element in solution array
-        int max=0;
-     
-        for(i=0;i<n;i++)
-        {
-            if(solution[i]>max)
-                max=solution[i];
-        }
-     
-        return max;
-     
-     
+        return  maxLength;   
     }
 
 }
@@ -69,7 +61,7 @@ public class DynamicLongestIncreasingSubsequence
 /*
  * 
 
- Given a sequence of n real numbers A(1) … A(n), determine a subsequence (not necessarily contiguous) of maximum length
+ Given a sequence of n real numbers A(1) â€¦ A(n), determine a subsequence (not necessarily contiguous) of maximum length
  in which the values in the subsequence form a strictly increasing sequence Problem Solution.
  
  n=5
