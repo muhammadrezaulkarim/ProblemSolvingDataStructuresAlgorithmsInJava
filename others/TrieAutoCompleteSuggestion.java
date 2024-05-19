@@ -1,133 +1,118 @@
 import java.util.*;
 
 public class TrieAutoCompleteSuggestion {
+    private class TrieNode {
+        private Map<Character, TrieNode> children = new HashMap<>();
+        private char value;
+        private boolean isTerminal;
+    }
 
-public static List<List<String>> autocompleteSuggestion(
-List<String> repository, String customerQuery) {
+    private TrieNode root = null;
 
-Node root = new Node();
-root.val = '-';
-root.isTerminal = false;
+    public TrieAutoCompleteSuggestion() {
+        root = new TrieNode();
+        root.value = '-';
+        root.isTerminal = false;
+    }
 
-for (String word : repository) {
-insertTrie(word, root);
-}
+    public List<String> autocompleteSuggestion(
+            List<String> repository, String prefix) {
 
-List<List<String>> res = new ArrayList<>();
+        for (String word : repository) {
+            insert(word);
+        }
 
-// Search only the number of entered letters is greater equal to 2
-for (int i = 1; i < customerQuery.length(); i++) {
-String searchStr = customerQuery.substring(0, i + 1);
+        List<String> suggestions = suggest(prefix);
 
-System.out.println("query: " + searchStr);
+        Collections.sort(suggestions);
 
-List<String> list = new ArrayList<String>();
-bfsSearch(root, searchStr, list, false, "");
+        return suggestions;
+    }
 
-// sort the returned words alphabetically
-Collections.sort(list);
+    public List<String> suggest(String prefix) {
+        List<String> suggestionsList = new ArrayList<>();
 
-List<String> newList = new ArrayList<String>();
+        TrieNode currentNode = root;
 
-// return only the first 3 words
-for (int j = 0; j < 3; j++) {
-if (j >= list.size()) {
-break;
-}
+        for (int i = 0; i < prefix.length(); i++) {
+            char ch = prefix.charAt(i);
 
-newList.add(list.get(j));
-}
+            TrieNode node = currentNode.children.get(ch);
 
-res.add(newList);
+            if (node == null)
+                return suggestionsList; // empty list
 
-}
+            currentNode = node;
+        }
 
-return res;
+        StringBuilder sb = new StringBuilder();
+        sb.append(prefix); // important to add this line
 
-}
+        // traverse and return all words rooted at this specific node currentNode
+        suggestionHelper(currentNode, suggestionsList, sb);
 
-public static void bfsSearch(Node node, String query, List<String> list,
-boolean flag, String prefixStr) {
-// as soon as the prefix matches,
-// copy all the words starting at that prefix
+        return suggestionsList;
+    }
 
-if (prefixStr.equals(query)) {
-flag = true;
-}
+    public void suggestionHelper(TrieNode node, List<String> list, StringBuilder sb) {
+        // add only when a word is detected
+        if (node.isTerminal) {
+            list.add(sb.toString());
+        }
 
-if (flag && node.isTerminal) {
-list.add(prefixStr);
-}
+        for (TrieNode child : node.children.values()) {
+            sb.append(child.value); // add the character
 
-for (int j = 0; j < node.children.size(); j++) {
-Node child = node.children.get(j);
+            suggestionHelper(child, list, sb);
 
-bfsSearch(child, query, list, flag, prefixStr + child.val);
+            sb.setLength(sb.length() - 1); // delete the character added before the call
+        }
 
-}
+    }
 
-}
+    public void insert(String word) {
+        TrieNode currentNode = root;
 
-public static void insertTrie(String word, Node root) {
-Node currentNode = root;
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            TrieNode node = currentNode.children.get(ch);
 
-int pos = 0;
-boolean found = false;
+            if (node == null) {
+                node = new TrieNode();
+                node.value = ch;
 
-while (pos < word.length()) {
-found = false;
-char c = word.charAt(pos);
+                currentNode.children.put(ch, node); // make sure to add this new node
+            }
 
-for (int j = 0; j < currentNode.children.size(); j++) {
-if (currentNode.children.get(j).val == c) {
-currentNode = currentNode.children.get(j);
+            currentNode = node;
+        }
 
-found = true;
-break;
-}
-}
+        currentNode.isTerminal = true; // very important line to represent a terminal word
+    }
 
-if (!found) {
-Node newNode = new Node();
-newNode.val = c;
+    public static void main(String[] args) {
+        TrieAutoCompleteSuggestion ob = new TrieAutoCompleteSuggestion();
 
-if (pos == word.length() - 1)
-newNode.isTerminal = true;
-else
-newNode.isTerminal = false;
+        ArrayList<String> list = new ArrayList<String>();
 
-currentNode.children.add(newNode);
+        list.add("hello");
+        list.add("dog");
+        list.add("hell");
+        list.add("cat");
+        list.add("a");
+        list.add("hel");
+        list.add("help");
+        list.add("helps");
+        list.add("helping");
 
-// make the new node current node
-currentNode = newNode;
-
-}
-
-pos++;
-}
-
-}
-
-static class Node {
-char val;
-boolean isTerminal;
-ArrayList<Node> children = new ArrayList<Node>();
+        // System.out.println(ob.autocompleteSuggestion(list, "a"));
+        System.out.println(ob.autocompleteSuggestion(list, "hel"));
+    }
 
 }
 
-public static void main(String[] args) {
-TrieAutoCompleteSuggestion ob = new TrieAutoCompleteSuggestion();
-
-ArrayList<String> list = new ArrayList<String>();
-
-list.add("te");
-list.add("a");
-list.add("ab");
-list.add("test");
-list.add("test2");
-
-System.out.println(ob.autocompleteSuggestion(list, "test"));
-System.out.println(ob.autocompleteSuggestion(list, "ab"));
-}
-
-}
+/*
+ * Time Complexity: O(N*L) where N is the number of words in the trie and L is
+ * the length of the longest word in the trie.
+ * Auxiliary Space: O(N*L+N * ALPHABET_SIZE)
+ */
