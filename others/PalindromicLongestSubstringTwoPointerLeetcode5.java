@@ -1,4 +1,4 @@
-public class PalindromicLongestSubstringTwoPointerLeetcode647 {
+public class PalindromicLongestSubstringTwoPointerLeetcode5 {
     public String longestPalindrome(String s) {
         if (s == null || s.isEmpty())
             return "";
@@ -56,7 +56,7 @@ public class PalindromicLongestSubstringTwoPointerLeetcode647 {
     public static void main(String[] args) {
         //String str = "babad"; // expect bab or aba
         String str = "cbbd"; // expect bb
-        PalindromicLongestSubstringTwoPointerLeetcode647 ob = new PalindromicLongestSubstringTwoPointerLeetcode647();
+        PalindromicLongestSubstringTwoPointerLeetcode5 ob = new PalindromicLongestSubstringTwoPointerLeetcode5();
         System.out.println(ob.longestPalindrome(str));
     }
 }
