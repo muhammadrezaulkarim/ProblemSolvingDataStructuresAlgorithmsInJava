@@ -19,8 +19,8 @@ public class BinaryTreeIsSameStructureLeetCode100 {
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
 
-        inOrderTraversal(p, sb1);
-        inOrderTraversal(q, sb2);
+        preOrderTraversal(p, sb1);
+        preOrderTraversal(q, sb2);
 
         if(sb1.toString().equals(sb2.toString()))
             return true;
@@ -29,7 +29,7 @@ public class BinaryTreeIsSameStructureLeetCode100 {
         
     }
 
-    public void inOrderTraversal(TreeNode node, StringBuilder sb)
+    public void preOrderTraversal(TreeNode node, StringBuilder sb)
     {
         if(node == null) 
         {
@@ -39,8 +39,8 @@ public class BinaryTreeIsSameStructureLeetCode100 {
 
         sb.append(node.val);
 
-        inOrderTraversal(node.left, sb);
-        inOrderTraversal(node.right, sb);     
+        preOrderTraversal(node.left, sb);
+        preOrderTraversal(node.right, sb);     
     }
 }
 
